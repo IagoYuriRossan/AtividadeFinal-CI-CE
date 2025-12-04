@@ -24,3 +24,4 @@ test
 # Major Version Test
 # Version Test
 # Test PATCH
+# Test MINOR
