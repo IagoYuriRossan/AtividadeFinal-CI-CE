@@ -36,9 +36,13 @@ jobs:
 
       - name: Version bump
         id: version
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
-          NEW_VER=$(node tools/increment-version.js | tail -n1)
+          # Use the commit message that triggered the workflow
+          NEW_VER=$(node tools/increment-version.js "$COMMIT_MSG" | tail -n1)
           echo "new_version=$NEW_VER" >> $GITHUB_OUTPUT
+          echo "Bumped version to $NEW_VER based on commit: $COMMIT_MSG"
 
       - name: Commit version change and push tag
         if: steps.version.outputs.new_version != ''
