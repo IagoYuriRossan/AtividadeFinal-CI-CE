@@ -20,3 +20,4 @@ Siga `docs/SETUP.md` para os próximos passos (criação de repositório Docker,
 # Pipeline Test
 # Semantic Version Test
 # Breaking Change Test
+test
