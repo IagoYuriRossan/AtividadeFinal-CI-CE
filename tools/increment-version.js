@@ -26,8 +26,7 @@ function bumpVersion(current, level) {
   while (parts.length < 3) parts.push(0);
   if (level === 'major') { 
     parts[0] += 1; 
-    // Keep MINOR, only reset PATCH
-    parts[2] = 0; 
+    // Keep MINOR and PATCH (don't reset anything)
   }
   else if (level === 'minor') { parts[1] += 1; parts[2] = 0; }
   else { parts[2] += 1; }
