@@ -18,3 +18,4 @@ Arquivos adicionados:
 Siga `docs/SETUP.md` para os próximos passos (criação de repositório Docker, tokens e secrets).
 
 # Pipeline Test
+# Semantic Version Test
