@@ -27,3 +27,4 @@ test
 # Test MINOR
 # Test MAJOR
 # Final Test PATCH
+# Final Test MINOR
