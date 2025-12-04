@@ -22,3 +22,4 @@ Siga `docs/SETUP.md` para os próximos passos (criação de repositório Docker,
 # Breaking Change Test
 test
 # Major Version Test
+# Version Test
