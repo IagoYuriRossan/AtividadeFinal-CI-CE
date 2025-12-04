@@ -14,7 +14,11 @@ function getLastCommitMessage(provided) {
 function bumpVersion(current, level) {
   const parts = current.split('.').map(n => parseInt(n, 10));
   while (parts.length < 3) parts.push(0);
-  if (level === 'major') { parts[0] += 1; parts[1] = 0; parts[2] = 0; }
+  if (level === 'major') { 
+    parts[0] += 1; 
+    // Keep MINOR, only reset PATCH
+    parts[2] = 0; 
+  }
   else if (level === 'minor') { parts[1] += 1; parts[2] = 0; }
   else { parts[2] += 1; }
   return parts.join('.');
