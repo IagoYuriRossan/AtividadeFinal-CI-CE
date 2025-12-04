@@ -23,3 +23,4 @@ Siga `docs/SETUP.md` para os próximos passos (criação de repositório Docker,
 test
 # Major Version Test
 # Version Test
+# Test PATCH
