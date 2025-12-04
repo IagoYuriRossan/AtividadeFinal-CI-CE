@@ -16,3 +16,4 @@ Arquivos adicionados:
 - `docs/SETUP.md` - instruções para criar secrets e configurar serviços externos (Docker Hub, Render, SonarCloud).
 
 Siga `docs/SETUP.md` para os próximos passos (criação de repositório Docker, tokens e secrets).
+
