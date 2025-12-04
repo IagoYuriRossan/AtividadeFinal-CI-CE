@@ -11,6 +11,16 @@ function getLastCommitMessage(provided) {
   }
 }
 
+function getLastVersionFromGit() {
+  try {
+    // Get the latest tag (version)
+    const tag = execSync('git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"').toString().trim();
+    return tag.replace(/^v/, '');
+  } catch (e) {
+    return '0.0.0';
+  }
+}
+
 function bumpVersion(current, level) {
   const parts = current.split('.').map(n => parseInt(n, 10));
   while (parts.length < 3) parts.push(0);
@@ -32,11 +42,15 @@ function main() {
   else if (/^feat(\(|:)/i.test(msg) || /^feat/i.test(msg)) level = 'minor';
   else if (/^fix(\(|:)/i.test(msg) || /^fix/i.test(msg)) level = 'patch';
 
-  const pj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-  const current = pj.version || '0.0.0';
+  // Get version from last git tag instead of package.json
+  const current = getLastVersionFromGit();
   const next = bumpVersion(current, level);
+  
+  // Update package.json
+  const pj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
   pj.version = next;
   fs.writeFileSync('package.json', JSON.stringify(pj, null, 2) + '\n');
+  
   // Print the new version in a way easily parsed by GH Actions
   console.log(`NEW_VERSION=${next}`);
   // Also print plainly
