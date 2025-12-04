@@ -50,8 +50,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git add package.json
           git commit -m "chore(release): version $NEW_VERSION" || echo "no changes to commit"
-          git tag "v$NEW_VERSION" || true
-          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}" refs/tags/v$NEW_VERSION || true
+          # delete existing tag if exists (local and remote)
+          git tag -d "v$NEW_VERSION" 2>/dev/null || true
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}" ":refs/tags/v$NEW_VERSION" 2>/dev/null || true
+          # create and push new tag
+          git tag "v$NEW_VERSION"
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}" refs/tags/v$NEW_VERSION
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
