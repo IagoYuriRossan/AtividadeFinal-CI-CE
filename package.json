@@ -1,6 +1,6 @@
 {
   "name": "api-sast",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "API example for P2 DevSecOps CI/CD",
   "main": "src/index.js",
   "scripts": {
