@@ -41,18 +41,18 @@ function main() {
   else if (/^feat(\(|:)/i.test(msg) || /^feat/i.test(msg)) level = 'minor';
   else if (/^fix(\(|:)/i.test(msg) || /^fix/i.test(msg)) level = 'patch';
 
-  // Get version from last git tag instead of package.json
+  // Obter a versão da última tag do git em vez do package.json
   const current = getLastVersionFromGit();
   const next = bumpVersion(current, level);
   
-  // Update package.json
+ // Atualizar package.json
   const pj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
   pj.version = next;
   fs.writeFileSync('package.json', JSON.stringify(pj, null, 2) + '\n');
   
-  // Print the new version in a way easily parsed by GH Actions
+// Imprima a nova versão de forma que seja facilmente analisada pelo GH Actions
   console.log(`NEW_VERSION=${next}`);
-  // Also print plainly
+// Imprima também em formato legível
   console.log(next);
 }
 
