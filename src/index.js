@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 const routes = require('./routes');
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,23 +17,29 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 // Routes (includes CRUD placeholders)
 app.use('/api', routes);
 
-// Attempt to connect to DB if env provided (optional)
+// PostgreSQL connection pool
+let pool;
 async function tryDbConnect() {
-  const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE } = process.env;
-  if (!MYSQL_HOST) return;
+  const { DATABASE_URL } = process.env;
+  if (!DATABASE_URL) {
+    console.log('No DATABASE_URL provided, running without database');
+    return;
+  }
   try {
-    const conn = await mysql.createConnection({
-      host: MYSQL_HOST,
-      user: MYSQL_USER,
-      password: MYSQL_PASSWORD,
-      database: MYSQL_DATABASE
+    pool = new Pool({
+      connectionString: DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
     });
-    console.log('Connected to MySQL');
-    await conn.end();
+    const client = await pool.connect();
+    console.log('Connected to PostgreSQL');
+    client.release();
   } catch (err) {
-    console.warn('Could not connect to MySQL:', err.message);
+    console.warn('Could not connect to PostgreSQL:', err.message);
   }
 }
+
+// Export pool for use in routes
+app.locals.pool = pool;
 
 const port = process.env.PORT || 3000;
 app.listen(port, async () => {
